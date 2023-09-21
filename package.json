@@ -1,15 +1,23 @@
 {
-  "name": "fokus2",
+  "name": "fokus",
   "version": "1.0.0",
-  "description": "Projeto em TypeScript",
+  "description": "",
   "main": "script-crud.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kayoennrique/fokus2.git"
+  },
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "dependencies": {
-    "typescript": "^5.2.2"
+  "bugs": {
+    "url": "https://github.com/kayoennrique/fokus2/issues"
+  },
+  "homepage": "https://github.com/kayoennrique/fokus2#readme",
+  "devDependencies": {
+    "typescript": "^5.1.6"
   }
 }
