@@ -5,6 +5,10 @@ const ulTasks = document.querySelector('.app__section-task-list');
 
 const tasks = JSON.parse(localStorage.getItem('tasks')) || [];
 
+function updateTasks() {
+    localStorage.setItem('tasks', JSON.stringify(tasks))
+}
+
 function createTaskElement(task) {
     const li = document.createElement('li');
     li.classList.add('app__section-task-list-item');
@@ -27,7 +31,8 @@ function createTaskElement(task) {
 
     button.onclick = () => {
         const newDescription = prompt("Qual é o novo nome da tarefa?");
-        paragraph.textContent = newDescription;
+        task.description = newDescription;
+        updateTasks();
     };
 
     const buttonImage = document.createElement('img');
@@ -54,6 +59,7 @@ formAddTask.addEventListener('submit', (e) => {
     const taskElement = createTaskElement(task);
     ulTasks.append(taskElement);
     localStorage.setItem('tasks', JSON.stringify(tasks));
+    updateTasks();
     textarea.value = '';
     formAddTask.classList.add('hidden');
 })
