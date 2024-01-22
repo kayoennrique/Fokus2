@@ -7,7 +7,7 @@ const tasks = JSON.parse(localStorage.getItem('tasks')) || [];
 
 function updateTasks() {
     localStorage.setItem('tasks', JSON.stringify(tasks))
-}
+};
 
 function createTaskElement(task) {
     const li = document.createElement('li');
@@ -30,9 +30,14 @@ function createTaskElement(task) {
     button.classList.add('app_button-edit');
 
     button.onclick = () => {
+        debugger
         const newDescription = prompt("Qual é o novo nome da tarefa?");
-        task.description = newDescription;
-        updateTasks();
+        console.log('Nova descrição da tarefa: ', newDescription);
+        if (newDescription) {
+            paragraph.textContent = newDescription;
+            task.description = newDescription;
+            updateTasks();
+        }
     };
 
     const buttonImage = document.createElement('img');
