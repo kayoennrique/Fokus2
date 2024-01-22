@@ -2,11 +2,14 @@ const btnAddTask = document.querySelector('.app__button--add-task');
 const formAddTask = document.querySelector('.app__form-add-task');
 const textarea = document.querySelector('.app__form-textarea');
 const ulTasks = document.querySelector('.app__section-task-list');
+const paragraphDescriptionTask = document.querySelector('.app__section-active-task-description');
 
 const tasks = JSON.parse(localStorage.getItem('tasks')) || [];
+let taskSelected = null;
+let liTaskSelected = null;
 
 function updateTasks() {
-    localStorage.setItem('tasks', JSON.stringify(tasks))
+    localStorage.setItem('tasks', JSON.stringify(tasks));
 };
 
 function createTaskElement(task) {
@@ -48,7 +51,27 @@ function createTaskElement(task) {
     li.append(paragraph);
     li.append(button);
 
-    return li
+    li.onclick = () => {
+        document.querySelectorAll('.app__section-task-list-item-active')
+            .forEach(element => {
+                element.classList.remove('app__section-task-list-item-active');
+            });
+
+        if (taskSelected == task) {
+            paragraphDescriptionTask.textContent = '';
+            taskSelected = null;
+            liTaskSelected = null;
+            return
+        };
+
+        taskSelected = task;
+        liTaskSelected = li;
+        paragraphDescriptionTask.textContent = task.description;
+
+        li.classList.add('app__section-task-list-item-active');
+    }
+
+    return li;
 };
 
 btnAddTask.addEventListener('click', () => {
@@ -67,9 +90,17 @@ formAddTask.addEventListener('submit', (e) => {
     updateTasks();
     textarea.value = '';
     formAddTask.classList.add('hidden');
-})
+});
 
 tasks.forEach(task => {
     const taskElement = createTaskElement(task);
     ulTasks.append(taskElement);
+});
+
+document.addEventListener('FocoFinalizado', () => {
+    if (taskSelected && liTaskSelected) {
+        liTaskSelected.classList.remove('app__section-task-list-item-active');
+        liTaskSelected.classList.add('app__section-task-list-item-complete');
+        liTaskSelected.querySelector('button').setAttribute('disabled', 'disabled')
+    };
 });

@@ -8,7 +8,7 @@ const buttons = document.querySelectorAll('.app__card-button')
 const startPauseBt = document.querySelector('#start-pause')
 const musicFocusInput = document.querySelector('#alternar-musica')
 const startOrPauseBt = document.querySelector('#start-pause span')
-const startOrPauseBtIcon = document.querySelector(".app__card-primary-butto-icon") 
+const startOrPauseBtIcon = document.querySelector(".app__card-primary-butto-icon")
 const timeOnScreen = document.querySelector('#timer')
 
 const music = new Audio('/sounds/luna-rise-part-one.mp3')
@@ -22,7 +22,7 @@ let rangeId = null
 music.loop = true
 
 musicFocusInput.addEventListener('change', () => {
-    if(music.paused) {
+    if (music.paused) {
         music.play()
     } else {
         music.pause()
@@ -49,7 +49,7 @@ longBt.addEventListener('click', () => {
 
 function changeContext(context) {
     showTime()
-    buttons.forEach(function (context){
+    buttons.forEach(function (context) {
         context.classList.remove('active')
     })
     html.setAttribute('data-contexto', context)
@@ -64,7 +64,7 @@ function changeContext(context) {
         case "descanso-curto":
             title.innerHTML = `
             Que tal dar uma respirada? <strong class="app__title-strong">Faça uma pausa curta!</strong>
-            ` 
+            `
             break;
         case "descanso-longo":
             title.innerHTML = `
@@ -76,10 +76,15 @@ function changeContext(context) {
 }
 
 const countdown = () => {
-    if(elapsedTimeInSeconds <= 0){
+    if (elapsedTimeInSeconds <= 0) {
         audioTimeFinished.play()
         alert('Tempo finalizado!')
-        zerar()
+        const focusActive = html.getAttribute('data-contexto') == 'foco'
+        if (focusActive) {
+            const evt = new CustomEvent('FocoFinalizado')
+            document.dispatchEvent(evt)
+        }
+        reset()
         return
     }
     elapsedTimeInSeconds -= 1
@@ -89,9 +94,9 @@ const countdown = () => {
 startPauseBt.addEventListener('click', startOrPause)
 
 function startOrPause() {
-    if(rangeId){
+    if (rangeId) {
         audioPause.play()
-        zerar()
+        reset()
         return
     }
     audioPlay.play()
@@ -100,16 +105,16 @@ function startOrPause() {
     startOrPauseBtIcon.setAttribute('src', `/images/pause.png`)
 }
 
-function zerar() {
-    clearInterval(rangeId) 
+function reset() {
+    clearInterval(rangeId)
     startOrPauseBt.textContent = "Começar"
     startOrPauseBtIcon.setAttribute('src', `/images/play_arrow.png`)
     rangeId = null
 }
 
 function showTime() {
-    const tempo = new Date(elapsedTimeInSeconds * 1000)
-    const timeFormatted = tempo.toLocaleTimeString('pt-Br', {minute: '2-digit', second: '2-digit'})
+    const time = new Date(elapsedTimeInSeconds * 1000)
+    const timeFormatted = time.toLocaleTimeString('pt-Br', { minute: '2-digit', second: '2-digit' })
     timeOnScreen.innerHTML = `${timeFormatted}`
 }
 
