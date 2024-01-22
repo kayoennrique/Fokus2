@@ -1,8 +1,9 @@
 const btnAddTask = document.querySelector('.app__button--add-task');
 const formAddTask = document.querySelector('.app__form-add-task');
 const textarea = document.querySelector('.app__form-textarea');
+const ulTasks = document.querySelector('.app__section-task-list');
 
-const tasks = [];
+const tasks = JSON.parse(localStorage.getItem('tasks')) || [];
 
 function createTaskElement(task) {
     const li = document.createElement('li');
@@ -43,4 +44,9 @@ formAddTask.addEventListener('submit', (e) => {
     };
     tasks.push(task);
     localStorage.setItem('tasks', JSON.stringify(tasks));
+});
+
+tasks.forEach(task => {
+    const taskElement = createTaskElement(task);
+    ulTasks.append(taskElement)
 });
