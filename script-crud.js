@@ -18,23 +18,26 @@ function createTaskElement(task) {
                 fill="#01080E"></path>
         </svg>
     `;
-
     const paragraph = document.createElement('p');
-    paragraph.textContent = task.description
+    paragraph.textContent = task.description;
+    paragraph.classList.add('app__section-task-list-item-description');
 
     const button = document.createElement('button');
+    button.classList.add('app_button-edit');
+
     const buttonImage = document.createElement('img');
     buttonImage.setAttribute('src', '/images/edit.png');
-
     button.append(buttonImage);
 
-    li.append(svg)
-    li.append(paragraph)
-    li.append(button)
-}
+    li.append(svg);
+    li.append(paragraph);
+    li.append(button);
+
+    return li
+};
 
 btnAddTask.addEventListener('click', () => {
-    formAddTask.classList.toggle('hidden')
+    formAddTask.classList.toggle('hidden');
 });
 
 formAddTask.addEventListener('submit', (e) => {
@@ -43,10 +46,14 @@ formAddTask.addEventListener('submit', (e) => {
         description: textarea.value
     };
     tasks.push(task);
+    const taskElement = createTaskElement(task);
+    ulTasks.append(taskElement);
     localStorage.setItem('tasks', JSON.stringify(tasks));
-});
+    textarea.value = '';
+    formAddTask.classList.add('hidden');
+})
 
 tasks.forEach(task => {
     const taskElement = createTaskElement(task);
-    ulTasks.append(taskElement)
+    ulTasks.append(taskElement);
 });
